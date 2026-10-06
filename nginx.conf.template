@@ -1,0 +1,28 @@
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  server_tokens off;
+
+  # Security headers (XSS containment for the token-holding SPA, clickjacking, sniffing).
+  add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${API_ORIGIN} https:; font-src 'self' data:; connect-src 'self' ${API_ORIGIN}; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+  add_header X-Frame-Options "DENY" always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+  add_header Permissions-Policy "camera=(self), microphone=(), geolocation=(), serial=(self), usb=(self)" always;
+
+  location /assets/ {
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header X-Content-Type-Options "nosniff" always;
+    try_files $uri =404;
+  }
+
+  # SPA fallback so client-side routes don't 404 on refresh
+  location / {
+    add_header Cache-Control "no-cache";
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${API_ORIGIN} https:; font-src 'self' data:; connect-src 'self' ${API_ORIGIN}; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    try_files $uri $uri/ /index.html;
+  }
+}
