@@ -380,7 +380,20 @@ export default function SalesPage() {
   const handleItemChange = (index, field, value) => {
     setState((prev) => {
       const items = [...prev.items];
-      items[index] = computeLine({ ...items[index], [field]: value });
+      const current = items[index];
+      let patch = { [field]: value };
+      if (field === "pieces") {
+        const quantity = Math.min(Number(current.availablePieces || current.stockPieces || 1), Math.max(1, Number(value) || 1));
+        const ratio = quantity / Math.max(1, Number(current.pieces || 1));
+        patch = {
+          pieces: quantity,
+          stoneAmount: Number(current.stoneAmount || 0) * ratio,
+          otherCharges: Number(current.otherCharges || 0) * ratio,
+          discount: Number(current.discount || 0) * ratio,
+          ...(current.makingChargeType === "FLAT" ? { makingChargeRate: Number(current.makingChargeRate || 0) * ratio } : {}),
+        };
+      }
+      items[index] = computeLine({ ...current, ...patch });
       return { ...prev, items };
     });
     if (field === "rate" && validationErrors.items) setValidationErrors((p) => ({ ...p, items: null }));
@@ -1091,7 +1104,7 @@ export default function SalesPage() {
                         <th className="p-2 text-right">Gross Wt</th>
                         <th className="p-2 text-right">Stone Wt</th>
                         <th className="p-2 text-right">Net Wt</th>
-                        <th className="p-2 text-right min-w-[80px]">Rate(₹/g)</th>
+                        <th className="p-2 text-right min-w-[80px]">Rate(₹/Pc)</th>
                         <th className="p-2 text-right">Metal Amt</th>
                         <th className="p-2 text-center min-w-[120px]">Making</th>
                         <th className="p-2 text-right">Making Ch.</th>
@@ -1117,7 +1130,19 @@ export default function SalesPage() {
                               {it.huidNo && <div className="text-[10px] text-slate-500">HUID {it.huidNo}</div>}
                             </td>
                             <td className="p-2 font-semibold text-amber-700">{it.purityName || "-"}</td>
-                            <td className="p-2 text-right">{it.pieces}</td>
+                            <td className="p-2 text-center">
+                              <Input
+                                type="number"
+                                min="1"
+                                max={it.availablePieces || it.stockPieces || 1}
+                                step="1"
+                                value={it.pieces}
+                                onChange={(e) => handleItemChange(idx, "pieces", e.target.value)}
+                                className="h-7 w-16 px-1 text-center text-xs"
+                                aria-label={`Quantity, ${it.availablePieces || it.stockPieces || 1} pieces available`}
+                              />
+                              <div className="text-[10px] text-slate-500">of {it.availablePieces || it.stockPieces || 1} available</div>
+                            </td>
                             <td className="p-2 text-right">{weightStr(it.grossWeight)}</td>
                             <td className="p-2 text-right">{weightStr(it.stoneWeight)}</td>
                             <td className="p-2 text-right font-bold text-slate-900">{weightStr(it.netWeight)}</td>

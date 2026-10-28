@@ -35,22 +35,31 @@ export const normalizeMakingType = (type) => {
 
 /** Recomputes the money columns of one bill line. Weights come from the inventory and are not edited. */
 export const computeLine = (line) => {
-  const netWeight = nonNegative(line.netWeight);
+  const quantity = Math.max(1, Number(line.pieces || 1));
+  const stockPieces = Math.max(1, Number(line.stockPieces || quantity));
+  const ratio = quantity / stockPieces;
+  const grossWeight = roundMoney(nonNegative(line.stockGrossWeight ?? line.grossWeight) * ratio);
+  const stoneWeight = roundMoney(nonNegative(line.stockStoneWeight ?? line.stoneWeight) * ratio);
+  const netWeight = roundMoney(nonNegative(line.stockNetWeight ?? line.netWeight) * ratio);
   const rate = nonNegative(line.rate);
-  const metalAmount = roundMoney(netWeight * rate);
+  const metalAmount = roundMoney(quantity * rate);
   const makingChargeType = normalizeMakingType(line.makingChargeType);
   const makingChargeRate = nonNegative(line.makingChargeRate);
   let makingCharges;
   if (makingChargeType === "PERCENT") makingCharges = roundMoney((metalAmount * makingChargeRate) / 100);
   else if (makingChargeType === "PER_GRAM") makingCharges = roundMoney(netWeight * makingChargeRate);
   // FLAT: the rate box holds the making amount itself (same as the server's else-branch).
-  else makingCharges = roundMoney(makingChargeRate);
+  else makingCharges = roundMoney(makingChargeRate * quantity);
   const stoneAmount = roundMoney(nonNegative(line.stoneAmount));
   const otherCharges = roundMoney(nonNegative(line.otherCharges));
   const gross = metalAmount + makingCharges + stoneAmount + otherCharges;
   const discount = Math.min(roundMoney(nonNegative(line.discount)), roundMoney(gross));
   return {
     ...line,
+    pieces: quantity,
+    grossWeight,
+    stoneWeight,
+    netWeight,
     makingChargeType,
     metalAmount,
     makingCharges,
@@ -73,16 +82,18 @@ export const lineFromBillingLine = (billingLine, scan = {}) => {
     purityName: bl.purityName || (bl.purity ? `${bl.purity}` : ""),
     purity: bl.purity ?? null,
     metalName: bl.metalName || "",
-    pieces: Number(bl.pieces) || 1,
-    grossWeight: Number(bl.grossWeight) || 0,
-    stoneWeight: Number(bl.stoneWeight) || 0,
-    netWeight: Number(bl.netWeight) || 0,
+    pieces: 1,
+    stockPieces: Number(inv.pieces || bl.pieces) || 1,
+    availablePieces: Number(inv.availablePieces || bl.availablePieces || bl.pieces) || 1,
+    stockGrossWeight: Number(bl.grossWeight) || 0,
+    stockStoneWeight: Number(bl.stoneWeight) || 0,
+    stockNetWeight: Number(bl.netWeight) || 0,
     rate: Number(bl.rate) || 0,
     rateSource: bl.rateSource || (Number(bl.rate) > 0 ? "RATE_MASTER" : "NONE"),
     makingChargeType: normalizeMakingType(bl.makingChargeType),
     makingChargeRate: Number(bl.makingChargeRate) || 0,
-    stoneAmount: Number(bl.stoneAmount) || 0,
-    otherCharges: Number(bl.otherCharges) || 0,
+    stoneAmount: (Number(bl.stoneAmount) || 0) / Math.max(1, Number(inv.pieces || bl.pieces) || 1),
+    otherCharges: (Number(bl.otherCharges) || 0) / Math.max(1, Number(inv.pieces || bl.pieces) || 1),
     discount: 0,
   });
 };

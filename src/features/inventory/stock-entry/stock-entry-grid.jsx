@@ -97,8 +97,8 @@ export default function StockEntryGrid({
     goTo(index + 1, "item");
   };
 
-  const lastCol = purchase ? "stoneAmount" : "saleMakingRate";
-  const colCount = purchase ? 15 : 11;
+  const lastCol = purchase ? "stoneAmount" : "rate";
+  const colCount = purchase ? 15 : 12;
 
   return (
     <div ref={containerRef} className="overflow-x-auto rounded-lg border border-slate-200 bg-white" data-scanner-ignore>
@@ -115,9 +115,9 @@ export default function StockEntryGrid({
             <th className="w-[92px] px-2 py-2 text-left">HUID</th>
             <th className="w-[150px] px-2 py-2 text-left">Barcode</th>
             <th className="w-[150px] px-2 py-2 text-left">Sale making</th>
+            <th className="w-[84px] px-2 py-2 text-right">Rate ₹/Pc</th>
             {purchase && (
               <>
-                <th className="w-[84px] px-2 py-2 text-right">Rate ₹/g</th>
                 <th className="w-[84px] px-2 py-2 text-right">Making ₹</th>
                 <th className="w-[84px] px-2 py-2 text-right">Stone ₹</th>
                 <th className="w-[96px] px-2 py-2 text-right">Value ₹</th>
@@ -237,11 +237,19 @@ export default function StockEntryGrid({
                       />
                     </div>
                   </td>
+                  <td className="px-2 py-1.5">
+                    <input
+                      data-cell={`${index}-rate`}
+                      aria-label={label("rate per piece")}
+                      inputMode="decimal"
+                      className={numCls}
+                      value={row.rate}
+                      onChange={setDecimal("rate")}
+                      onKeyDown={lastCol === "rate" ? (e) => onLastCellKey(e, index) : undefined}
+                    />
+                  </td>
                   {purchase && (
                     <>
-                      <td className="px-2 py-1.5">
-                        <input aria-label={label("rate per gram")} inputMode="decimal" className={numCls} value={row.rate} onChange={setDecimal("rate")} />
-                      </td>
                       <td className="px-2 py-1.5">
                         <input aria-label={label("making charges")} inputMode="decimal" className={numCls} value={row.makingCharges} onChange={setDecimal("makingCharges")} />
                       </td>

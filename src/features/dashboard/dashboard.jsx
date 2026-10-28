@@ -9,6 +9,7 @@ import {
   FileText,
   ChevronRight,
   ArrowUpRight,
+  BellRing,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -108,6 +109,7 @@ export default function Dashboard() {
   const supplierDues = data?.supplierDues || {};
   const rateTiles = buildRateTiles(data?.rates);
   const stockByMetal = Array.isArray(data?.stockByMetal) ? data.stockByMetal : [];
+  const stockAlerts = Array.isArray(data?.stockAlerts) ? data.stockAlerts : [];
   const storeName = selectedStore?.storeName || selectedStore?.name || data?.storeName || "";
   const salesTrend = data?.salesTrend || [];
   const recentSales = data?.recentSales || [];
@@ -166,6 +168,36 @@ export default function Dashboard() {
           </Button>
         </div>
       </div>
+
+      {stockAlerts.length > 0 && (
+        <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-xs" aria-label="Stock alerts">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <BellRing size={17} className="text-amber-700" />
+              <h2 className="text-sm font-bold text-slate-900">Stock Alerts</h2>
+              <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-amber-800">{stockAlerts.length}</span>
+            </div>
+            <Link to="/inventory/inventory" className="text-xs font-semibold text-blue-700 underline">View stock</Link>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {stockAlerts.slice(0, 12).map((alert, index) => (
+              <div key={`${alert.name}-${index}`} className={`rounded-xl border bg-white px-3 py-2.5 ${alert.status === "SOLD_OUT" ? "border-red-200" : "border-amber-200"}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="truncate text-xs font-bold text-slate-800">{alert.name}</span>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${alert.status === "SOLD_OUT" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-800"}`}>
+                    {alert.status === "SOLD_OUT" ? "Sold Out" : "Low Stock"}
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] text-slate-600">
+                  Total {alert.totalStock} Pcs · Sold {alert.sold} Pcs · Available {alert.available} Pcs
+                </p>
+              </div>
+            ))}
+          </div>
+          {stockAlerts.length > 12 && <p className="mt-2 text-[11px] text-slate-500">And {stockAlerts.length - 12} more stock alerts.</p>}
+          <p className="mt-2 text-[10px] text-slate-500">Low stock means 50 pieces or fewer remaining.</p>
+        </section>
+      )}
 
       {/* =========================================================
           2. LIVE GOLD & SILVER RATES

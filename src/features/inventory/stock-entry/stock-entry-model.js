@@ -58,7 +58,7 @@ export const intInput = (value = "") => String(value).replace(/\D/g, "").slice(0
 export const netWeight = (row) => round3(Math.max(0, num(row.grossWeight) - num(row.stoneWeight)));
 
 export const lineValue = (row) =>
-  roundMoney(netWeight(row) * num(row.rate) + num(row.makingCharges) + num(row.stoneAmount));
+  roundMoney(Math.max(1, Number.parseInt(row.pieces, 10) || 1) * num(row.rate) + num(row.makingCharges) + num(row.stoneAmount));
 
 export const normalizeCode = (value) => String(value || "").trim().toUpperCase();
 
