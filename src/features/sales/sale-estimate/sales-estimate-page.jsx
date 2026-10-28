@@ -354,7 +354,7 @@ export default function SalesPage() {
         addLine(line);
         feedback(true);
         if (!(line.rate > 0)) {
-          notifyError(null, `No sale rate in Rate Master for ${line.purityName || "this purity"} ${line.metalName || ""}. Enter the rate for ${line.itemCode} before saving.`);
+          notifyError(null, `No per-piece sale rate is saved for ${line.particulars}. Enter the rate for ${line.itemCode} before saving.`);
         }
       } else {
         setPendingLine(line);
@@ -478,7 +478,7 @@ export default function SalesPage() {
     if (!state.items.length) errors.items = "Add at least one item to generate an invoice.";
     const zeroRate = state.items.find((it) => !(Number(it.rate) > 0));
     if (zeroRate) {
-      errors.items = `Rate is 0 for ${zeroRate.particulars} (${zeroRate.itemCode}). Set today's rate in Rate Master or enter the rate.`;
+      errors.items = `Per-piece rate is 0 for ${zeroRate.particulars} (${zeroRate.itemCode}). Enter the rate before saving.`;
     }
     if (totals.deductionsExceed) {
       errors.deductions = `Advance + old gold + Less URD (₹${money(totals.totalAdjustments)}) exceed the invoice value (₹${money(totals.subTotal)}).`;
@@ -582,6 +582,11 @@ export default function SalesPage() {
       const result = await createSale(payload);
       const sale = result?.sale || null;
       notifySuccess(`Sale invoice ${result?.invoiceNo || sale?.invoiceNo || ""} created.`);
+      for (const alert of sale?.stockAlerts || []) {
+        notifyInfo(alert.type === "SOLD_OUT"
+          ? `${alert.name} is Sold Out. Available stock: 0 Pcs.`
+          : `Low stock: ${alert.name} has ${alert.availableQuantity} Pcs available (50 or fewer).`);
+      }
       if (sale && Math.abs(Number(sale.netPayable || 0) - totals.netPayable) > 0.5) {
         notifyInfo(`Server recalculated net payable to ₹${money(sale.netPayable)} (preview showed ₹${money(totals.netPayable)}).`);
       }
@@ -1152,7 +1157,7 @@ export default function SalesPage() {
                                 step="0.01"
                                 min="0"
                                 value={it.rate}
-                                title={zeroRate ? "No rate in Rate Master — enter today's rate" : `Rate source: ${it.rateSource || "manual"}`}
+                                title={zeroRate ? "No per-piece sale rate saved; enter it here" : `Rate source: ${it.rateSource || "manual"}`}
                                 onChange={(e) => handleItemChange(idx, "rate", e.target.value)}
                                 className={`h-7 text-right text-xs w-20 px-1 font-semibold ${zeroRate ? "border-red-500 bg-red-50 text-red-700" : ""}`}
                               />
