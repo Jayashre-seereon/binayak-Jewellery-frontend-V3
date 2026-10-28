@@ -47,10 +47,10 @@ export default function Header() {
     <div className="h-16 bg-white/95 backdrop-blur border-b border-slate-200 flex items-center justify-between px-6 shadow-sm">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain p-1" />
+          <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain p-1" />
         </div>
         <div className="leading-tight">
-          <div className="font-semibold text-slate-900">Binayak Jewellers</div>
+          <div className="font-semibold text-slate-900">Binnayak Jewellers</div>
           <div className="text-xs text-slate-500">
             {selectedStore?.storeName || selectedStore?.name || "Jewellery ERP"}
           </div>

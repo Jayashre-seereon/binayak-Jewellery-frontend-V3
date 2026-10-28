@@ -8,7 +8,7 @@ const BRAND = {
 };
 
 export default function InvoiceBrandHeader({ store }) {
-  const storeName = String(store?.storeName || "BINAYAK JEWELLERS PATIA").toUpperCase();
+  const storeName = String(store?.storeName || "BINNAYAK JEWELLERS PATIA").toUpperCase();
   const branch = store?.tagline || "Patia Branch, Bhubaneswar";
 
   return (
@@ -30,9 +30,9 @@ export default function InvoiceBrandHeader({ store }) {
           fontSize: 17,
           fontWeight: 800,
         }}
-        aria-label="Binayak Jewellers logo"
+        aria-label="Binnayak Jewellers logo"
       >
-        <img src="/logo.png" alt="Binayak Jewellers" style={{ width: 36, height: 36, objectFit: "contain" }} />
+        <img src="/logo.png" alt="Binnayak Jewellers" style={{ width: 36, height: 36, objectFit: "contain" }} />
       </div>
       <div className="min-w-0 ml-4">
         <div className="truncate text-base font-bold tracking-wide">{storeName}</div>

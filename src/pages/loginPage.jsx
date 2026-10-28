@@ -158,10 +158,10 @@ export default function LoginPage() {
             <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full border-[28px] border-white/10" />
             <div className="relative">
               <div className="mb-8 flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-white p-2 shadow-xl">
-                <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain" />
+                <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain" />
               </div>
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-100">Welcome to</p>
-              <h1 className="mt-3 text-4xl font-bold leading-tight">Binayak<br />Jewellers</h1>
+              <h1 className="mt-3 text-4xl font-bold leading-tight">Binnayak<br />Jewellers</h1>
               <p className="mt-5 max-w-xs text-sm leading-6 text-amber-50/90">
                 A simple, secure workspace for managing your jewellery business.
               </p>
@@ -172,10 +172,10 @@ export default function LoginPage() {
           <CardContent className="p-7 sm:p-10">
             <div className="mb-8 flex items-center gap-3 sm:hidden">
               <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-amber-50 p-1">
-                <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain" />
+                <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain" />
               </div>
               <div>
-                <div className="font-semibold text-slate-900">Binayak Jewellers</div>
+                <div className="font-semibold text-slate-900">Binnayak Jewellers</div>
                 <div className="text-xs text-slate-500">Jewellery ERP</div>
               </div>
             </div>

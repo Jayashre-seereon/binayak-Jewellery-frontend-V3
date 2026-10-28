@@ -170,31 +170,46 @@ export default function Dashboard() {
       </div>
 
       {stockAlerts.length > 0 && (
-        <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-xs" aria-label="Stock alerts">
+        <section className="overflow-hidden rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-xs" aria-label="Stock alerts">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <BellRing size={17} className="text-amber-700" />
-              <h2 className="text-sm font-bold text-slate-900">Stock Alerts</h2>
+              <h2 className="text-sm font-bold text-slate-900">Low Stock &amp; Sold Out</h2>
               <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-amber-800">{stockAlerts.length}</span>
             </div>
             <Link to="/inventory/inventory" className="text-xs font-semibold text-blue-700 underline">View stock</Link>
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {stockAlerts.slice(0, 12).map((alert, index) => (
-              <div key={`${alert.name}-${index}`} className={`rounded-xl border bg-white px-3 py-2.5 ${alert.status === "SOLD_OUT" ? "border-red-200" : "border-amber-200"}`}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-xs font-bold text-slate-800">{alert.name}</span>
-                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${alert.status === "SOLD_OUT" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-800"}`}>
-                    {alert.status === "SOLD_OUT" ? "Sold Out" : "Low Stock"}
-                  </span>
-                </div>
-                <p className="mt-1 text-[11px] text-slate-600">
-                  Total {alert.totalStock} Pcs · Sold {alert.sold} Pcs · Available {alert.available} Pcs
-                </p>
-              </div>
-            ))}
+          <div className="mb-3 overflow-x-auto rounded-xl border border-amber-100 bg-white">
+            <table className="w-full min-w-[620px] text-left text-xs">
+              <thead className="border-b bg-slate-50 text-slate-600">
+                <tr>
+                  <th className="px-3 py-2 font-semibold">Product</th>
+                  <th className="px-3 py-2 text-right font-semibold">Total Stock</th>
+                  <th className="px-3 py-2 text-right font-semibold">Sold</th>
+                  <th className="px-3 py-2 text-right font-semibold">Available</th>
+                  <th className="px-3 py-2 text-right font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {stockAlerts.map((alert, index) => (
+                  <tr key={`table-${alert.inventoryId || alert.name}-${index}`}>
+                    <td className="px-3 py-2.5 font-semibold text-slate-800">
+                      <div>{alert.name}</div>
+                      {alert.inventoryCode && <div className="mt-0.5 font-mono text-[10px] font-normal text-slate-500">{alert.inventoryCode}</div>}
+                    </td>
+                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.totalStock} pcs</td>
+                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.sold} pcs</td>
+                    <td className={`px-3 py-2.5 text-right font-bold ${alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}`}>{alert.available} pcs</td>
+                    <td className="px-3 py-2.5 text-right font-semibold">
+                      <span className={alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}>
+                        {alert.status === "SOLD_OUT" ? "Sold Out" : "Low Stock"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {stockAlerts.length > 12 && <p className="mt-2 text-[11px] text-slate-500">And {stockAlerts.length - 12} more stock alerts.</p>}
           <p className="mt-2 text-[10px] text-slate-500">Low stock means 50 pieces or fewer remaining.</p>
         </section>
       )}
@@ -246,7 +261,7 @@ export default function Dashboard() {
       {/* =========================================================
           3. FOUR SIMPLE KPI CARDS
       ========================================================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total Sales */}
         <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center gap-3.5">
           <div className="h-11 w-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
@@ -267,7 +282,7 @@ export default function Dashboard() {
         </div>
 
         {/* Current Stock */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center gap-3.5">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center gap-3.5 sm:col-span-2 lg:col-span-2">
           <div className="h-11 w-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
             <Scale size={22} />
           </div>
@@ -276,8 +291,8 @@ export default function Dashboard() {
             {stockByMetal.length ? (
               <div className="mt-0.5 space-y-0.5">
                 {stockByMetal.map((m) => (
-                  <div key={m.metalName || "unspecified"} className="flex items-baseline justify-between gap-2 text-sm">
-                    <span className="font-semibold text-slate-800 truncate">{m.metalName || "Unspecified"}</span>
+                  <div key={m.metalName || "unspecified"} className="flex items-baseline justify-between gap-3 text-sm">
+                    <span className="min-w-0 font-semibold text-slate-800">{m.metalName || "Unspecified"}</span>
                     <span className="text-slate-900 font-bold whitespace-nowrap">
                       {weight(m.netWeight || 0)} gm
                       <span className="ml-1 text-[11px] font-normal text-slate-500">({m.pieces || 0} pcs)</span>

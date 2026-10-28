@@ -112,7 +112,7 @@ export default function StoreSelectionPage() {
           <div className="mb-8 grid gap-6 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
             <div className="flex items-center gap-4">
               <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain p-2" />
+                <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain p-2" />
               </div>
               <div>
                 <div className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">

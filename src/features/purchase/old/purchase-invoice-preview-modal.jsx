@@ -330,7 +330,7 @@ export default function PurchaseInvoicePreviewModal({ open, onOpenChange, purcha
               {/* THANK YOU & TERMS */}
               <div className="pt-2">
                 <div className="font-bold text-xs mb-2">
-                  {purchase.store?.tagline || `Thank You For Visit ${purchase.store?.storeName || "Binayak Jewellers"} ...`}
+                  {purchase.store?.tagline || `Thank You For Visit ${purchase.store?.storeName || "Binnayak Jewellers"} ...`}
                 </div>
                 <div className="text-[10px] text-gray-500 leading-tight space-y-0.5">
                   <div>I have verified the Weight & Pieces & found ok</div>
@@ -399,7 +399,7 @@ export default function PurchaseInvoicePreviewModal({ open, onOpenChange, purcha
               </div>
 
               <div className="pt-6 text-right">
-                <div className="text-[10px] text-gray-500">For {purchase.store?.storeName || "Binayak Jewellers"}</div>
+                <div className="text-[10px] text-gray-500">For {purchase.store?.storeName || "Binnayak Jewellers"}</div>
                 <div className="pt-6 font-bold text-xs">Authorised Signatory</div>
               </div>
             </div>

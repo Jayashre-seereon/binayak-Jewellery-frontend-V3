@@ -171,10 +171,10 @@ export default function Sidebar() {
       <div className="mb-6 flex-shrink-0 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/20">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white">
-            <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain p-1" />
+            <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain p-1" />
           </div>
           <div className="min-w-0">
-            <div className="truncate text-base font-semibold tracking-wide">Binayak Jewellers</div>
+            <div className="truncate text-base font-semibold tracking-wide">Binnayak Jewellers</div>
             <div className="text-xs text-slate-400">ERP Dashboard</div>
           </div>
         </div>

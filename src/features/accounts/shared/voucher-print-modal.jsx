@@ -261,7 +261,7 @@ export default function VoucherPrintModal({ open, setOpen, voucher }) {
                 <div className="sign-line border-t border-slate-900 pt-1 font-semibold uppercase text-slate-700">
                   Authorized Signatory
                 </div>
-                <div className="text-[10px] text-slate-500">{selectedStore?.storeName || "Binayak Jeweller"}</div>
+                <div className="text-[10px] text-slate-500">{selectedStore?.storeName || "Binnayak Jeweller"}</div>
               </div>
             </div>
           </div>

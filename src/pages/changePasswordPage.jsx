@@ -38,10 +38,10 @@ export default function ChangePasswordPage({ forced = false }) {
         <CardContent className="p-7">
           <div className="mb-6 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-amber-50 p-1">
-              <img src={logo} alt="Binayak Jewellers logo" className="h-full w-full object-contain" />
+              <img src={logo} alt="Binnayak Jewellers logo" className="h-full w-full object-contain" />
             </div>
             <div>
-              <div className="font-semibold text-slate-900">Binayak Jewellers</div>
+              <div className="font-semibold text-slate-900">Binnayak Jewellers</div>
               <div className="text-xs text-slate-500">{user?.name || user?.email}</div>
             </div>
           </div>
