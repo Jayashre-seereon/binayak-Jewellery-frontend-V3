@@ -384,14 +384,9 @@ export default function SalesPage() {
       let patch = { [field]: value };
       if (field === "pieces") {
         const quantity = Math.min(Number(current.availablePieces || current.stockPieces || 1), Math.max(1, Number(value) || 1));
-        const ratio = quantity / Math.max(1, Number(current.pieces || 1));
-        patch = {
-          pieces: quantity,
-          stoneAmount: Number(current.stoneAmount || 0) * ratio,
-          otherCharges: Number(current.otherCharges || 0) * ratio,
-          discount: Number(current.discount || 0) * ratio,
-          ...(current.makingChargeType === "FLAT" ? { makingChargeRate: Number(current.makingChargeRate || 0) * ratio } : {}),
-        };
+        // Rate and charge inputs are per piece. Keep them stable as quantity changes;
+        // computeLine recalculates metal and making totals from the new piece count.
+        patch = { pieces: quantity };
       }
       items[index] = computeLine({ ...current, ...patch });
       return { ...prev, items };
