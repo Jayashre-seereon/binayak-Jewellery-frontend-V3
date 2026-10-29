@@ -865,7 +865,7 @@ export default function OldPurchaseForm({ open, setOpen, onSave, defaultValues }
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">Date</label>
+              <label className="text-xs text-muted-foreground">Purchase Invoice Date</label>
               <Input type="date" value={form.date} onChange={(e) => changeDate(e.target.value)} />
               {fieldError("date")}
             </div>

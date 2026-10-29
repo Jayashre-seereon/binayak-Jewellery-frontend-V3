@@ -882,7 +882,7 @@ export default function SalesPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                 <div>
-                  <label className="text-slate-600 font-semibold block mb-1">Sale Date <span className="text-red-500">*</span></label>
+                  <label className="text-slate-600 font-semibold block mb-1">Sale Invoice Date <span className="text-red-500">*</span></label>
                   <Input
                     type="date"
                     max={todayLocal()}

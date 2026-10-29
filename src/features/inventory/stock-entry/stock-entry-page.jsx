@@ -297,7 +297,7 @@ export default function StockEntryPage() {
             </div>
             <div className="w-40">
               <label htmlFor="se-date" className="text-xs text-slate-600">
-                Date *
+                Invoice Date *
               </label>
               <input
                 id="se-date"
