@@ -169,51 +169,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {stockAlerts.length > 0 && (
-        <section className="overflow-hidden rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-xs" aria-label="Stock alerts">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <BellRing size={17} className="text-amber-700" />
-              <h2 className="text-sm font-bold text-slate-900">Low Stock &amp; Sold Out</h2>
-              <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-amber-800">{stockAlerts.length}</span>
-            </div>
-            <Link to="/inventory/inventory" className="text-xs font-semibold text-blue-700 underline">View stock</Link>
-          </div>
-          <div className="mb-3 overflow-x-auto rounded-xl border border-amber-100 bg-white">
-            <table className="w-full min-w-[620px] text-left text-xs">
-              <thead className="border-b bg-slate-50 text-slate-600">
-                <tr>
-                  <th className="px-3 py-2 font-semibold">Product</th>
-                  <th className="px-3 py-2 text-right font-semibold">Total Stock</th>
-                  <th className="px-3 py-2 text-right font-semibold">Sold</th>
-                  <th className="px-3 py-2 text-right font-semibold">Available</th>
-                  <th className="px-3 py-2 text-right font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {stockAlerts.map((alert, index) => (
-                  <tr key={`table-${alert.inventoryId || alert.name}-${index}`}>
-                    <td className="px-3 py-2.5 font-semibold text-slate-800">
-                      <div>{alert.name}</div>
-                      {alert.inventoryCode && <div className="mt-0.5 font-mono text-[10px] font-normal text-slate-500">{alert.inventoryCode}</div>}
-                    </td>
-                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.totalStock} pcs</td>
-                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.sold} pcs</td>
-                    <td className={`px-3 py-2.5 text-right font-bold ${alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}`}>{alert.available} pcs</td>
-                    <td className="px-3 py-2.5 text-right font-semibold">
-                      <span className={alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}>
-                        {alert.status === "SOLD_OUT" ? "Sold Out" : "Low Stock"}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-2 text-[10px] text-slate-500">Low stock means 50 pieces or fewer remaining.</p>
-        </section>
-      )}
-
       {/* =========================================================
           2. LIVE GOLD & SILVER RATES
       ========================================================= */}
@@ -257,6 +212,51 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+
+      {stockAlerts.length > 0 && (
+        <section className="overflow-hidden rounded-2xl border border-amber-200 bg-amber-50 p-4 shadow-xs" aria-label="Stock alerts">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <BellRing size={17} className="text-amber-700" />
+              <h2 className="text-sm font-bold text-slate-900">Low Stock &amp; Sold Out</h2>
+              <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-amber-800">{stockAlerts.length}</span>
+            </div>
+            <Link to="/inventory/inventory" className="text-xs font-semibold text-blue-700 underline">View stock</Link>
+          </div>
+          <div className="mb-3 max-h-[220px] overflow-auto rounded-xl border border-amber-100 bg-white">
+            <table className="w-full min-w-[620px] text-left text-xs">
+              <thead className="sticky top-0 z-10 border-b bg-slate-50 text-slate-600">
+                <tr>
+                  <th className="px-3 py-2 font-semibold">Product</th>
+                  <th className="px-3 py-2 text-right font-semibold">Total Stock</th>
+                  <th className="px-3 py-2 text-right font-semibold">Sold</th>
+                  <th className="px-3 py-2 text-right font-semibold">Available</th>
+                  <th className="px-3 py-2 text-right font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {stockAlerts.map((alert, index) => (
+                  <tr key={`table-${alert.inventoryId || alert.name}-${index}`}>
+                    <td className="px-3 py-2.5 font-semibold text-slate-800">
+                      <div>{alert.name}</div>
+                      {alert.inventoryCode && <div className="mt-0.5 font-mono text-[10px] font-normal text-slate-500">{alert.inventoryCode}</div>}
+                    </td>
+                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.totalStock} pcs</td>
+                    <td className="px-3 py-2.5 text-right text-slate-600">{alert.sold} pcs</td>
+                    <td className={`px-3 py-2.5 text-right font-bold ${alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}`}>{alert.available} pcs</td>
+                    <td className="px-3 py-2.5 text-right font-semibold">
+                      <span className={alert.status === "SOLD_OUT" ? "text-red-700" : "text-amber-700"}>
+                        {alert.status === "SOLD_OUT" ? "Sold Out" : "Low Stock"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 text-[10px] text-slate-500">Low stock means 50 pieces or fewer remaining.</p>
+        </section>
+      )}
 
       {/* =========================================================
           3. FOUR SIMPLE KPI CARDS
